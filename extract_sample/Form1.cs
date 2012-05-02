@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -81,22 +81,25 @@ namespace extract_sample
           }
         }
 #if _USE_ICONIC_
+        else if (source.EndsWith(".zip"))
+        {
 /** for not hasty man
-        using (Ionic.Zip.ZipFile zip = Ionic.Zip.ZipFile.Read(source))
-        {
-          foreach (Ionic.Zip.ZipEntry entry in zip)
+          using (Ionic.Zip.ZipFile zip = Ionic.Zip.ZipFile.Read(source))
           {
-            entry.Extract(desitination, ExtractExistingFileAction.OverwriteSilently);
+            foreach (Ionic.Zip.ZipEntry entry in zip)
+            {
+              entry.Extract(desitination, ExtractExistingFileAction.OverwriteSilently);
+            }
           }
-        }
 */
-        using (Ionic.Zip.ZipFile zip = Ionic.Zip.ZipFile.Read(source))
-        {
-          zip.ExtractProgress += new EventHandler<Ionic.Zip.ExtractProgressEventArgs>(extract_zip);
-          foreach (Ionic.Zip.ZipEntry entry in zip)
+          using (Ionic.Zip.ZipFile zip = Ionic.Zip.ZipFile.Read(source))
           {
-            Invoke(new delegateUpdateLabel((string s) => { this.label1.Text = s; }), new Object[] { entry.FileName + " extracting ..." });
-            entry.Extract(desitination, ExtractExistingFileAction.OverwriteSilently);
+            zip.ExtractProgress += new EventHandler<Ionic.Zip.ExtractProgressEventArgs>(extract_zip);
+            foreach (Ionic.Zip.ZipEntry entry in zip)
+            {
+              Invoke(new delegateUpdateLabel((string s) => { this.label1.Text = s; }), new Object[] { entry.FileName + " extracting ..." });
+              entry.Extract(desitination, ExtractExistingFileAction.OverwriteSilently);
+            }
           }
         }
 #else 
